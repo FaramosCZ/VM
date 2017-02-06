@@ -28,6 +28,7 @@ function script_info
         -d VM_image_dir${DEFAULT}
               Directory where the VM image will be stored.${WHITE}
         --size size_in_GB${DEFAULT}
+              ! limited functionality !
               Specify size of the VM image in GB. Default is 15 GB.${WHITE}
 	-c | --copy_files${DEFAULT}
 	      Set, if you want to copy content of config_files folder to VM${WHITE}
@@ -59,7 +60,7 @@ function script_info
 #-----------------------------------------------------------------------------------------------------
 # Check the basics - if virtualization tools are installed in the host system
 
-dnf install -q -y @virtualization coreutils base64
+dnf install -q -y @virtualization libvirt-client coreutils base64
 systemctl start libvirtd && systemctl enable libvirtd && systemctl start virtlogd
 
 #-----------------------------------------------------------------------------------------------------
