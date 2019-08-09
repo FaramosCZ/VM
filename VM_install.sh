@@ -34,6 +34,8 @@ function script_info
 	      Set, if you want to copy content of config_files folder to VM${WHITE}
         --GUI${DEFAULT}
               Set, if you want to go through instalation in graphic mode. Text mode is default.${WHITE}
+        --UEFI${DEFAULT}
+              Set, if you want to use UEFI firmware instead of BIOS. BIOS is the default.${WHITE}
 
     SCRIPT PURPOSE:${DEFAULT}
         This script will install new VM. When correct kickstart file provided, the installation
@@ -67,6 +69,7 @@ systemctl start libvirtd && systemctl enable libvirtd && systemctl start virtlog
 # Gets arguments
 
 GUI="--nographics"
+UEFI=""
 SIZE="10"	# default size of disk in GB
 
 while [[ $# -gt 0 ]]; do
@@ -97,6 +100,10 @@ while [[ $# -gt 0 ]]; do
     ;;
     --GUI)
     GUI=""
+    shift # past argument
+    ;;
+    --UEFI)
+    UEFI="--boot uefi"
     shift # past argument
     ;;
     *)
@@ -166,6 +173,7 @@ virt-install                                                     \
     --check-cpu                                                  \
     --accelerate                                                 \
     $GUI                                                         \
+    $UEFI                                                        \
     --extra-args    "ks=file:/$(basename $KS_FILE) console=tty0 console=ttyS0,115200"
 
 rm -f "/var/local/$(basename $KS_FILE)"
